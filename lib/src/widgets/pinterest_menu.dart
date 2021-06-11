@@ -32,18 +32,26 @@ class PinterestMenu extends StatelessWidget {
         })
   ];
 
+  final bool show;
+
+  PinterestMenu({this.show = true});
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => _MenuModel(),
-      child: _PinterestMenuBackground(_MenuItems(this.items)),
+      child: AnimatedOpacity(
+        duration: Duration(milliseconds: 250),
+        opacity: this.show ? 1 : 0,
+        child: _PinterestMenuBackground(child: _MenuItems(this.items)),
+      ),
     );
   }
 }
 
 class _PinterestMenuBackground extends StatelessWidget {
   final Widget child;
-  _PinterestMenuBackground(this.child);
+  _PinterestMenuBackground({this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -55,11 +63,7 @@ class _PinterestMenuBackground extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(100)),
           boxShadow: [
-            BoxShadow(
-              color: Colors.black38, 
-              blurRadius: 10, 
-              spreadRadius: -5
-            )
+            BoxShadow(color: Colors.black38, blurRadius: 10, spreadRadius: -5)
           ]),
     );
   }
@@ -74,11 +78,7 @@ class _MenuItems extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: List.generate(items.length,
-          (index) => _PinterestMenuButton(
-            button: items[index], 
-            index: index
-          )
-      ),
+          (index) => _PinterestMenuButton(button: items[index], index: index)),
     );
   }
 }
